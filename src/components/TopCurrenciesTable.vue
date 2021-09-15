@@ -1,7 +1,7 @@
 <template>
   <BaseTable :rows="currencies" :columns="$options.columns">
     <template v-slot:rowContent="{ row, value, columnName }">
-      <RouterLink class="table__cell-inner" :to="`/currencies/${row.id}`">
+      <RouterLink class="table__cell-inner" :to="`/currencies/${row.name}`">
         <template v-if="columnName === 'name'">
           <div class="top-crypto-table__name">
             <img
