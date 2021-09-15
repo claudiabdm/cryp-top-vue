@@ -1,0 +1,36 @@
+// ------- //
+// BASE    //
+// ------- //
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+body {
+  margin: 2.5vw;
+  color: var(--grey-900);
+  background-color: var(--grey-100);
+  font-family: 'Roboto', Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+:root {
+  --primary: hsl(239, 84%, 67%);
+  --primary-light: hsl(239, 84%, 77%);
+  --primary-dark: hsl(239, 84%, 57%);
+
+  --secondary: hsl(160, 84%, 39%);
+  --secondary-light: hsl(160, 84%, 49%);
+  --secondary-dark: hsl(160, 84%, 29%);
+
+  --tertiary: hsl(0, 84%, 60%);
+  --tertiary-light: hsl(0, 84%, 70%);
+  --tertiary-dark: hsl(0, 84%, 50%);
+
+  --grey-100: #f9fafb;
+  --grey-200: #f3f4f6;
+  --grey-300: #e5e7eb;
+  --grey-400: #d1d5db;
+  --grey-500: #9ca3af;
+  --grey-600: #6b7280;
+  --grey-700: #4b5563;
+  --grey-800: #374151;
+  --grey-900: #1f2937;
+}
