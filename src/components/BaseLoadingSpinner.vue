@@ -21,6 +21,7 @@
   stroke-width: 2;
 }
 .rotate {
+  color: var(--primary-dark);
   transform-origin: center;
   animation: rotate 3s infinite linear;
 }
