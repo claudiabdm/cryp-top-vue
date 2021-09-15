@@ -1,15 +1,15 @@
 <template>
-  <h1 class="top-crypto__title">Top Crypto</h1>
-  <!-- <input
+  <section class="top-crypto">
+    <h1 class="top-crypto__title">Top Crypto</h1>
+    <!-- <input
     v-model.trim="searchQuery"
     class="top-crypto__search"
     type="search"
     aria-label="Search for crypto currency"
     placeholder="Search for crypto currency"
   /> -->
-  <div>
     <TopCurrenciesTable :currencies="currencies" />
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -33,6 +33,8 @@ export default defineComponent({
 @use '../styles/mixins/mixins' as *;
 
 .top-crypto {
+  max-width: 768px;
+  margin: auto;
   &__title {
     color: var(--primary-dark);
     margin-bottom: clamp(1rem, 2.5vw, 5vw);
