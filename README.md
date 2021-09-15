@@ -1,4 +1,10 @@
-# husleie-challenge
+# Husleie Challenge
+
+# Tech Stack
+
+- Vue-CLI
+
+
 
 ## Project setup
 ```
