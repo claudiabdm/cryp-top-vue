@@ -11,7 +11,9 @@
               :key="key"
               :class="['table__cell', column.align]"
             >
-              {{ column.name }}
+              <div class="table__cell-inner">
+                {{ column.name }}
+              </div>
             </th>
           </tr>
         </thead>
@@ -44,7 +46,7 @@
                     :data-col="columnName"
                   >
                     <slot
-                      :name="columnName"
+                      name="rowContent"
                       :row="row"
                       :value="value"
                       :columnName="columnName"
@@ -165,7 +167,6 @@ $header-height: 45px;
   }
 
   &__cell {
-    padding: rem(15px) rem(20px);
     vertical-align: middle;
     border-bottom: 1px solid var(--grey-300);
     &:first-child {
@@ -173,6 +174,11 @@ $header-height: 45px;
       left: 0;
       background-color: #fff;
     }
+  }
+
+  &__cell-inner {
+    display: block;
+    padding: rem(15px) rem(20px);
   }
 
   &__spinner {

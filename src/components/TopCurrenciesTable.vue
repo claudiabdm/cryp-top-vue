@@ -1,31 +1,38 @@
 <template>
   <BaseTable :rows="currencies" :columns="$options.columns">
-    <template v-slot:name="{ row }">
-      <div class="top-crypto-table__name">
-        <img
-          class="top-crypto-table__logo"
-          :src="`https://www.cryptocompare.com/${row.logo}`"
-          alt=""
-          srcset=""
-          width="24"
-          height="24"
-        />
-        <span>
-          {{ row.name }}
-        </span>
-      </div>
-    </template>
-    <template v-slot:change24h="{ row }">
-      <span
-        :class="[
-          {
-            up: !row.change24h.includes('-'),
-            down: row.change24h.includes('-'),
-          },
-        ]"
-      >
-        {{ row.change24h }}
-      </span>
+    <template v-slot:rowContent="{ row, value, columnName }">
+      <RouterLink class="table__cell-inner" :to="`/currencies/${row.id}`">
+        <template v-if="columnName === 'name'">
+          <div class="top-crypto-table__name">
+            <img
+              class="top-crypto-table__logo"
+              :src="`https://www.cryptocompare.com/${row.logo}`"
+              alt=""
+              srcset=""
+              width="24"
+              height="24"
+            />
+            <span>
+              {{ row.name }}
+            </span>
+          </div>
+        </template>
+        <template v-else-if="columnName === 'change24h'">
+          <span
+            :class="[
+              {
+                up: !row.change24h.includes('-'),
+                down: row.change24h.includes('-'),
+              },
+            ]"
+          >
+            {{ row.change24h }}
+          </span>
+        </template>
+        <template v-else>
+          {{ value }}
+        </template>
+      </RouterLink>
     </template>
   </BaseTable>
 </template>
