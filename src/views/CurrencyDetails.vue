@@ -109,7 +109,7 @@ export default defineComponent({
   }
   &__header {
     @include flex(center, flex-start);
-    font-size: clamp(1.25rem, 3vw, 4vw);
+    font-size: clamp(1rem, 4vw, 5vw);
     font-weight: 700;
   }
   &__text {
@@ -123,19 +123,22 @@ export default defineComponent({
   }
   &__price {
     @include flex(center, flex-start);
-    font-size: clamp(1.25rem, 2.5vw, 3.5vw);
+    font-size: clamp(1rem, 2vw, 3vw);
   }
   &__change {
     margin-left: 0.5em;
     border-radius: rem(10px);
-    padding: rem(10px);
+    padding: 0.5em;
     color: #fff;
     background-color: var(--secondary);
-    font-size: 0.5em;
+    font-size: 0.75em;
   }
   &__chart {
     width: 100%;
-    min-height: rem(400px);
+    min-height: rem(200px);
+    @media screen and (min-width: 728px) {
+      min-height: rem(450px);
+    }
   }
 }
 
