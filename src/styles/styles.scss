@@ -1,2 +1,7 @@
 @use 'global/reset';
 @use 'global/base';
+
+.loading {
+  width: 100;
+  justify-content: center;
+}
