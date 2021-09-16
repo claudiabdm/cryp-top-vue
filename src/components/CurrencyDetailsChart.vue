@@ -105,12 +105,12 @@ export default defineComponent({
       },
     }));
 
-    const { lineChartProps, lineChartRef } = useLineChart({
+    const { lineChartProps } = useLineChart({
       chartData,
       options,
     });
 
-    return { currencyOHLCV, lineChartProps, lineChartRef };
+    return { currencyOHLCV, lineChartProps };
   },
 });
 </script>
@@ -118,6 +118,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @use '../styles/mixins/mixins' as *;
 .chart {
+  width: 100%;
   padding: rem(10px);
   border-radius: 0.625rem;
   background-color: hsl(0, 0%, 100%);
@@ -127,6 +128,7 @@ export default defineComponent({
     max-height: rem(450px);
   }
   &__spinner {
+    width: 100%;
     margin: 0 auto;
   }
 }

@@ -24,7 +24,9 @@
           </span>
         </div>
       </div>
-      <CurrencyDetailsChart class="currency__row currency__elem" />
+      <div class="currency__chart currency__row currency__elem">
+        <CurrencyDetailsChart />
+      </div>
       <CurrencyDetailsHistoTable
         class="currency__row currency__row--center currency__elem"
         :currencyName="currency.fullName"
@@ -39,10 +41,14 @@
 
 <script lang="ts">
 import { useTopCurrencies } from '@/composables/useTopCurrencies';
-import { computed, defineComponent, onMounted } from 'vue';
+import {
+  computed,
+  defineAsyncComponent,
+  defineComponent,
+  onMounted,
+} from 'vue';
 import { useRoute } from 'vue-router';
 import BaseLoadingSpinner from '@/components/BaseLoadingSpinner.vue';
-import CurrencyDetailsChart from '@/components/CurrencyDetailsChart.vue';
 import CurrencyDetailsHistoTable from '@/components/CurrencyDetailsHistoTable.vue';
 import { useCurrencyQuote } from '@/composables/useCurrencyQuote';
 
@@ -50,7 +56,9 @@ export default defineComponent({
   name: 'CurrencyDetails',
   components: {
     BaseLoadingSpinner,
-    CurrencyDetailsChart,
+    CurrencyDetailsChart: defineAsyncComponent(
+      () => import('@/components/CurrencyDetailsChart.vue')
+    ),
     CurrencyDetailsHistoTable,
   },
   setup() {
@@ -124,6 +132,10 @@ export default defineComponent({
     color: #fff;
     background-color: var(--secondary);
     font-size: 0.5em;
+  }
+  &__chart {
+    width: 100%;
+    min-height: rem(400px);
   }
 }
 
