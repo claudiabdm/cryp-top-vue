@@ -39,19 +39,23 @@
           <template v-else>
             <template v-for="row in rows" :key="row.Id">
               <tr class="table__row">
-                <template v-for="(value, columnName) of row" :key="columnName">
+                <template
+                  v-for="(column, columnName) of columns"
+                  :key="columnName"
+                >
                   <td
-                    v-if="Object.keys(columns).includes(columnName)"
-                    :class="['table__cell', columns[columnName].align]"
+                    :class="['table__cell', column.align]"
                     :data-col="columnName"
                   >
                     <slot
                       name="rowContent"
                       :row="row"
-                      :value="value"
+                      :value="row[columnName]"
                       :columnName="columnName"
                     >
-                      {{ value }}
+                      <div class="table__cell-inner">
+                        {{ row[columnName] }}
+                      </div>
                     </slot>
                   </td>
                 </template>
@@ -121,11 +125,11 @@ $header-height: 45px;
 .table-inner {
   @include size(100%, 100%);
   position: relative;
-  border: 1px solid var(--grey-300);
+  min-height: $row-height * $rows + $header-height;
   border-radius: rem(10px);
   overflow-x: auto;
   background-color: #fff;
-  min-height: $row-height * $rows + $header-height;
+  box-shadow: 0 0 rem(5px) rem(2px) var(--grey-200);
 }
 
 .table {
@@ -150,6 +154,8 @@ $header-height: 45px;
     &:hover {
       .table__cell {
         background: var(--grey-200);
+      }
+      a {
         cursor: pointer;
       }
     }
