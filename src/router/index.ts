@@ -9,7 +9,7 @@ const routes = [
     component: TopCurrencies,
   },
   {
-    path: '/currency/:symbol',
+    path: '/currencies/:symbol',
     name: 'CurrencyDetails',
     component: CurrencyDetails,
   },
