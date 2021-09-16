@@ -28,7 +28,7 @@ export interface Currency {
   volume24h: string;
 }
 
-export interface OHLCV {
+export interface CurrencyOHLCV {
   time: number;
   open: number;
   high: number;
@@ -36,4 +36,5 @@ export interface OHLCV {
   close: number;
   volumefrom: number;
   volumeto: number;
+  timeDisplay?: string;
 }
