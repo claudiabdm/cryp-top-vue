@@ -6,7 +6,7 @@
           <div class="top-crypto-table__name">
             <img
               class="top-crypto-table__logo"
-              :src="`https://www.cryptocompare.com/${row.logo}`"
+              :src="row.logo"
               alt=""
               srcset=""
               width="24"

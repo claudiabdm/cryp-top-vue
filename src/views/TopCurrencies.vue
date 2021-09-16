@@ -1,13 +1,5 @@
 <template>
   <section class="top-crypto">
-    <h1 class="top-crypto__title">Top Crypto</h1>
-    <!-- <input
-    v-model.trim="searchQuery"
-    class="top-crypto__search"
-    type="search"
-    aria-label="Search for crypto currency"
-    placeholder="Search for crypto currency"
-  /> -->
     <TopCurrenciesTable :currencies="currencies" />
   </section>
 </template>
@@ -16,6 +8,7 @@
 import { defineComponent, onMounted } from 'vue';
 import { useTopCurrencies } from '@/composables/useTopCurrencies';
 import TopCurrenciesTable from '@/components/TopCurrenciesTable.vue';
+import { useCurrencyQuote } from '@/composables/useCurrencyQuote';
 
 export default defineComponent({
   name: 'TopCurrencies',
@@ -24,7 +17,8 @@ export default defineComponent({
   },
   setup() {
     const { currencies, getTopCurrencies, searchQuery } = useTopCurrencies();
-    onMounted(getTopCurrencies);
+    const { currencyQuote } = useCurrencyQuote();
+    onMounted(() => getTopCurrencies(currencyQuote.value));
     return { currencies, searchQuery };
   },
 });
@@ -35,11 +29,5 @@ export default defineComponent({
 .top-crypto {
   max-width: 768px;
   margin: auto;
-  &__title {
-    color: var(--primary-dark);
-    margin-bottom: clamp(1rem, 2.5vw, 5vw);
-    font-size: clamp(2rem, 4vw, 5vw);
-    font-weight: 700;
-  }
 }
 </style>
