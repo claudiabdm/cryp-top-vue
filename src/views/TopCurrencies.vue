@@ -5,10 +5,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent } from 'vue';
 import { useTopCurrencies } from '@/composables/useTopCurrencies';
 import TopCurrenciesTable from '@/components/TopCurrenciesTable.vue';
-import { useCurrencyQuote } from '@/composables/useCurrencyQuote';
 
 export default defineComponent({
   name: 'TopCurrencies',
@@ -16,9 +15,7 @@ export default defineComponent({
     TopCurrenciesTable,
   },
   setup() {
-    const { currencies, getTopCurrencies, searchQuery } = useTopCurrencies();
-    const { currencyQuote } = useCurrencyQuote();
-    onMounted(() => getTopCurrencies(currencyQuote.value));
+    const { currencies, searchQuery } = useTopCurrencies();
     return { currencies, searchQuery };
   },
 });

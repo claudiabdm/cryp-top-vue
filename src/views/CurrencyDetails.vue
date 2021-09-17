@@ -41,16 +41,10 @@
 
 <script lang="ts">
 import { useTopCurrencies } from '@/composables/useTopCurrencies';
-import {
-  computed,
-  defineAsyncComponent,
-  defineComponent,
-  onMounted,
-} from 'vue';
+import { computed, defineAsyncComponent, defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
 import BaseLoadingSpinner from '@/components/BaseLoadingSpinner.vue';
 import CurrencyDetailsHistoTable from '@/components/CurrencyDetailsHistoTable.vue';
-import { useCurrencyQuote } from '@/composables/useCurrencyQuote';
 
 export default defineComponent({
   name: 'CurrencyDetails',
@@ -62,8 +56,7 @@ export default defineComponent({
     CurrencyDetailsHistoTable,
   },
   setup() {
-    const { currencies, getTopCurrencies } = useTopCurrencies();
-    const { currencyQuote } = useCurrencyQuote();
+    const { currencies } = useTopCurrencies();
     const route = useRoute();
 
     const currency = computed(() => {
@@ -76,13 +69,6 @@ export default defineComponent({
       }
       return null;
     });
-
-    onMounted(() => {
-      if (currencies.value == null) {
-        getTopCurrencies(currencyQuote.value);
-      }
-    });
-
     return { currency };
   },
 });
