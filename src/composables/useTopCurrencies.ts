@@ -23,16 +23,27 @@ function getTopCurrencies(currencyQuote: string): void {
   fetchData<TopCurrenciesAPI>(api, { method: 'GET' }).then((res) => {
     state.currencies = [];
     res.Data.forEach((elem) => {
-      state.currencies?.push({
+      const currency = {
         id: elem.CoinInfo.Id,
         name: elem.CoinInfo.Name,
         fullName: elem.CoinInfo.FullName,
         logo: `https://www.cryptocompare.com/${elem.CoinInfo.ImageUrl}`,
-        price: elem.DISPLAY[currencyQuote].PRICE,
-        marketCap: elem.DISPLAY[currencyQuote].MKTCAP,
-        change24h: elem.DISPLAY[currencyQuote].CHANGE24HOUR,
-        volume24h: elem.DISPLAY[currencyQuote].TOTALVOLUME24H,
-      });
+        price: '-',
+        marketCap: '-',
+        change24h: '-',
+        volume24h: '-',
+      };
+      if (elem.DISPLAY) {
+        state.currencies?.push({
+          ...currency,
+          price: elem.DISPLAY[currencyQuote].PRICE,
+          marketCap: elem.DISPLAY[currencyQuote].MKTCAP,
+          change24h: elem.DISPLAY[currencyQuote].CHANGE24HOUR,
+          volume24h: elem.DISPLAY[currencyQuote].TOTALVOLUME24H,
+        });
+      } else {
+        state.currencies?.push(currency);
+      }
     });
   });
 }
