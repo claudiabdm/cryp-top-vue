@@ -40,12 +40,18 @@ export function useCurrencyOHLCV() {
     }>(api, {
       method: 'GET',
     });
+    if (res.Data.Data) {
+      return {
+        lastTs: res.Data.TimeFrom,
+        data: res.Data.Data.map((elem) => ({
+          timeDisplay: new Date(elem.time * 1000).toLocaleDateString(),
+          ...elem,
+        })),
+      };
+    }
     return {
-      lastTs: res.Data.TimeFrom,
-      data: res.Data.Data.map((elem) => ({
-        timeDisplay: new Date(elem.time * 1000).toLocaleDateString(),
-        ...elem,
-      })),
+      lastTs: 0,
+      data: [],
     };
   }
 

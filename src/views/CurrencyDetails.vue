@@ -1,37 +1,42 @@
 <template>
   <section :class="['currency', { loading: currency == null }]">
     <template v-if="currency">
-      <div class="currency__row">
-        <h2 class="currency__elem currency__header">
-          <img :src="currency.logo" alt="" srcset="" width="34" height="34" />
-          <div class="currency__header-text">
-            <span>{{ currency.fullName }} Price</span>
-            <span class="currency__symbol">{{ currency.name }} </span>
+      <template v-if="currency !== 'Not found'">
+        <div class="currency__row">
+          <h2 class="currency__elem currency__header">
+            <img :src="currency.logo" alt="" srcset="" width="34" height="34" />
+            <div class="currency__header-text">
+              <span>{{ currency.fullName }} Price</span>
+              <span class="currency__symbol">{{ currency.name }} </span>
+            </div>
+          </h2>
+          <div class="currency__elem currency__price">
+            {{ currency.price }}
+            <span
+              :class="[
+                'currency__change',
+                {
+                  up: !currency.change24h.includes('-'),
+                  down: currency.change24h.includes('-'),
+                },
+              ]"
+            >
+              {{ currency.change24h }}
+            </span>
           </div>
-        </h2>
-        <div class="currency__elem currency__price">
-          {{ currency.price }}
-          <span
-            :class="[
-              'currency__change',
-              {
-                up: !currency.change24h.includes('-'),
-                down: currency.change24h.includes('-'),
-              },
-            ]"
-          >
-            {{ currency.change24h }}
-          </span>
         </div>
-      </div>
-      <div class="currency__chart currency__row currency__elem">
-        <CurrencyDetailsChart />
-      </div>
-      <CurrencyDetailsHistoTable
-        class="currency__row currency__row--center currency__elem"
-        :currencyName="currency.fullName"
-        :currencySymbol="currency.name"
-      />
+        <div class="currency__chart currency__elem">
+          <CurrencyDetailsChart />
+        </div>
+        <CurrencyDetailsHistoTable
+          class="currency__elem"
+          :currencyName="currency.fullName"
+          :currencySymbol="currency.name"
+        />
+      </template>
+      <template v-else>
+        <div>Currency not found in Top 10 cryptocurrencies.</div>
+      </template>
     </template>
     <template v-else>
       <BaseLoadingSpinner class="currency__spinner" />
@@ -64,7 +69,7 @@ export default defineComponent({
         return (
           currencies.value.find(
             (currency) => currency.name === route.params.symbol
-          ) || null
+          ) || 'Not found'
         );
       }
       return null;
@@ -87,7 +92,6 @@ export default defineComponent({
   }
   &__row {
     @include flex(center, space-between);
-    flex-wrap: wrap;
     width: 100%;
     &--center {
       justify-content: center;
@@ -95,11 +99,11 @@ export default defineComponent({
   }
   &__header {
     @include flex(center, flex-start);
-    font-size: clamp(1rem, 4vw, 5vw);
+    font-size: clamp(1rem, 3vw, 4vw);
     font-weight: 700;
   }
-  &__text {
-    @include flex(flex-start, flex-start);
+  &__header-text {
+    margin-left: 1.5vw;
   }
   &__symbol {
     margin-left: 0.25em;
@@ -109,7 +113,8 @@ export default defineComponent({
   }
   &__price {
     @include flex(center, flex-start);
-    font-size: clamp(1rem, 2vw, 3vw);
+    font-size: clamp(1rem, 1.5vw, 2vw);
+    white-space: nowrap;
   }
   &__change {
     margin-left: 0.5em;
