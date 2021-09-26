@@ -6,13 +6,42 @@
           <tr>
             <th
               scope="col"
-              v-for="(column, key) of columns"
-              :data-col="key"
-              :key="key"
-              :class="['table__cell', column.align]"
+              v-for="(column, columnName) of columns"
+              :data-col="columnName"
+              :key="columnName"
+              class="table__cell"
+              @click="sortBy({ name: columnName, type: column.type })"
             >
-              <div class="table__cell-inner">
-                {{ column.name }}
+              <div
+                :class="[
+                  'table__cell-inner',
+                  'table__cell-inner--flex',
+                  column.align,
+                ]"
+              >
+                <span>
+                  {{ column.name }}
+                </span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  :class="[
+                    'table__icon',
+                    `table__icon--${columnState}`,
+                    { 'table__icon--none': columnSorted.name !== columnName },
+                  ]"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z"
+                  />
+                </svg>
               </div>
             </th>
           </tr>
@@ -23,7 +52,7 @@
           :aria-live="alertActive"
           :aria-busy="ariaBusy"
         >
-          <tr v-if="rows == null">
+          <tr v-if="sortedRows == null">
             <td
               class="center table__spinner"
               :colspan="Object.keys(columns).length"
@@ -31,13 +60,13 @@
               <BaseLoadingSpinner />
             </td>
           </tr>
-          <tr v-else-if="rows.length === 0">
+          <tr v-else-if="sortedRows.length === 0">
             <td class="center" :colspan="Object.keys(columns).length">
               Data not found
             </td>
           </tr>
           <template v-else>
-            <template v-for="row in rows" :key="row.Id">
+            <template v-for="row in sortedRows" :key="row.Id">
               <tr class="table__row">
                 <template
                   v-for="(column, columnName) of columns"
@@ -54,7 +83,14 @@
                       :columnName="columnName"
                     >
                       <div class="table__cell-inner">
-                        {{ row[columnName] }}
+                        <slot
+                          :name="columnName"
+                          :row="row"
+                          :value="row[columnName]"
+                          :columnName="columnName"
+                        >
+                          {{ row[columnName] }}
+                        </slot>
                       </div>
                     </slot>
                   </td>
@@ -69,34 +105,53 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watchEffect } from 'vue';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { computed, defineComponent, PropType, ref, watchEffect } from 'vue';
 import BaseLoadingSpinner from '@/components/BaseLoadingSpinner.vue';
 
 interface Column {
-  [key: string]: {
-    name: string;
-    align: 'center' | 'left' | 'right';
-  };
+  name: string;
+  align: 'center' | 'left' | 'right';
+  type: ColumnType;
 }
 
+type ColumnType = 'number' | 'string' | 'date' | null;
+type ColumnState = 'up' | 'down' | 'none';
+
 export default defineComponent({
-  name: 'MyTable',
+  name: 'BaseTable',
   components: {
     BaseLoadingSpinner,
   },
   props: {
     columns: {
-      type: Object as PropType<Column>,
+      type: Object as PropType<{ [key: string]: Column }>,
       required: true,
     },
     rows: {
-      type: Object,
+      type: Array as PropType<{ [key: string]: string }[]>,
       default: null,
     },
   },
+  emits: ['sortBy'],
   setup(props) {
     const alertActive = ref('polite');
     const ariaBusy = ref(true);
+    const columnState = ref<ColumnState>('none');
+    const columnSorted = ref<{
+      name: string;
+      type: ColumnType;
+    }>({
+      name: '',
+      type: 'string',
+    });
+
+    const sortedRows = computed(() => {
+      if (props.rows) {
+        return _sortRows(props.rows, columnSorted.value, columnState.value);
+      }
+      return null;
+    });
 
     watchEffect(() => {
       if (props.rows != null) {
@@ -105,7 +160,77 @@ export default defineComponent({
       }
     });
 
-    return { alertActive, ariaBusy };
+    function sortBy(column: Column) {
+      _setColumnState(column.name);
+      columnSorted.value = { name: column.name, type: column.type };
+    }
+
+    function _setColumnState(newColumnName: string) {
+      if (
+        columnSorted.value.name !== '' &&
+        columnSorted.value.name !== newColumnName
+      ) {
+        columnState.value = 'up';
+        return;
+      }
+      if (columnState.value == 'none') {
+        columnState.value = 'up';
+      } else if (columnState.value == 'up') {
+        console.log('down');
+        columnState.value = 'down';
+      } else {
+        columnState.value = 'none';
+        columnSorted.value = { name: '', type: 'string' };
+      }
+    }
+
+    function _sortRows(
+      rows: { [key: string]: any }[],
+      column: {
+        name: string;
+        type: ColumnType;
+      },
+      columnState: ColumnState
+    ) {
+      if (column.type == null || column.type == 'string') {
+        return _sortRowsByCol(rows, column.name, columnState);
+      }
+    }
+
+    function _sortRowsByCol(
+      rows: { [key: string]: any }[],
+      columnName: string,
+      columnState: ColumnState
+    ) {
+      if (columnState == 'up') {
+        return [...rows].sort((a, b) =>
+          a[columnName] < b[columnName]
+            ? -1
+            : a[columnName] === b[columnName]
+            ? 0
+            : 1
+        );
+      } else if (columnState == 'down') {
+        return [...rows].sort((a, b) =>
+          a[columnName] > b[columnName]
+            ? -1
+            : a[columnName] === b[columnName]
+            ? 0
+            : 1
+        );
+      } else {
+        return [...rows];
+      }
+    }
+
+    return {
+      alertActive,
+      ariaBusy,
+      sortBy,
+      sortedRows,
+      columnState,
+      columnSorted,
+    };
   },
 });
 </script>
@@ -143,6 +268,9 @@ $header-height: 45px;
   &__header {
     font-size: rem(14px);
     font-weight: 700;
+    .table__cell {
+      cursor: pointer;
+    }
   }
 
   &__body {
@@ -185,12 +313,33 @@ $header-height: 45px;
   &__cell-inner {
     display: block;
     padding: rem(15px) rem(20px);
+
+    &--flex {
+      @include flex(center, inherit);
+    }
   }
 
   &__spinner {
     @include absolute(auto, auto, 50%, 50%);
     @include flex(center, center);
     transform: translate3d(-50%, 0, 0);
+  }
+
+  &__icon {
+    margin: 0.5em;
+    color: var(--primary);
+    transition-delay: opacity transform;
+    transition: 0.15s linear;
+    &--up {
+      transform: rotate(0deg);
+    }
+    &--none {
+      opacity: 0;
+      transform: rotate(60deg);
+    }
+    &--down {
+      transform: rotate(180deg);
+    }
   }
 }
 
@@ -200,7 +349,7 @@ $header-height: 45px;
 }
 .right {
   text-align: right;
-  justify-content: flex-end;
+  flex-direction: row-reverse;
 }
 .center {
   text-align: center;
