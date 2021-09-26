@@ -5,7 +5,11 @@
       class="histo-table__table"
       :rows="sortedData"
       :columns="$options.columns"
-    />
+    >
+      <template v-slot:time="{ value }">
+        {{ new Date(value * 1000).toLocaleDateString() }}
+      </template>
+    </BaseTable>
     <button
       class="histo-table__load"
       type="button"
@@ -35,7 +39,7 @@ export default defineComponent({
     BaseTable,
   },
   columns: {
-    timeDisplay: {
+    time: {
       name: 'Date',
       align: 'left',
     },
