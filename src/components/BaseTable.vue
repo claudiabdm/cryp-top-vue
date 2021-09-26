@@ -66,37 +66,38 @@
             </td>
           </tr>
           <template v-else>
-            <template v-for="row in sortedRows" :key="row.Id">
-              <tr class="table__row">
-                <template
+            <transition-group name="list-complete">
+              <tr
+                class="table__row list-complete-item"
+                v-for="row in sortedRows"
+                :key="row"
+              >
+                <td
                   v-for="(column, columnName) of columns"
                   :key="columnName"
+                  :class="['table__cell', column.align]"
+                  :data-col="columnName"
                 >
-                  <td
-                    :class="['table__cell', column.align]"
-                    :data-col="columnName"
+                  <slot
+                    name="rowContent"
+                    :row="row"
+                    :value="row[columnName]"
+                    :columnName="columnName"
                   >
-                    <slot
-                      name="rowContent"
-                      :row="row"
-                      :value="row[columnName]"
-                      :columnName="columnName"
-                    >
-                      <div class="table__cell-inner">
-                        <slot
-                          :name="columnName"
-                          :row="row"
-                          :value="row[columnName]"
-                          :columnName="columnName"
-                        >
-                          {{ row[columnName] }}
-                        </slot>
-                      </div>
-                    </slot>
-                  </td>
-                </template>
+                    <div class="table__cell-inner">
+                      <slot
+                        :name="columnName"
+                        :row="row"
+                        :value="row[columnName]"
+                        :columnName="columnName"
+                      >
+                        {{ row[columnName] }}
+                      </slot>
+                    </div>
+                  </slot>
+                </td>
               </tr>
-            </template>
+            </transition-group>
           </template>
         </tbody>
       </table>
@@ -252,6 +253,7 @@ $header-height: 45px;
   min-height: $row-height * $rows + $header-height;
   border-radius: rem(10px);
   overflow-x: auto;
+  overflow-y: hidden;
   background-color: #fff;
   box-shadow: 0 0 rem(5px) rem(2px) var(--grey-200);
 }
@@ -269,6 +271,12 @@ $header-height: 45px;
     font-weight: 700;
     .table__cell {
       cursor: pointer;
+    }
+    .table__cell:first-child {
+      border-top-left-radius: rem(10px);
+    }
+    .table__cell:last-child {
+      border-top-right-radius: rem(10px);
     }
   }
 
@@ -289,6 +297,12 @@ $header-height: 45px;
     &:last-child {
       .table__cell {
         border-bottom: 0;
+        &:first-child {
+          border-bottom-left-radius: rem(10px);
+        }
+        &:last-child {
+          border-bottom-right-radius: rem(10px);
+        }
       }
     }
   }
@@ -353,5 +367,19 @@ $header-height: 45px;
 .center {
   text-align: center;
   justify-content: center;
+}
+
+.list-complete-item {
+  transition: transform 0.7s ease;
+}
+
+.list-complete-enter-from,
+.list-complete-leave-to {
+  transform: translate3d(0, $row-height, 0);
+}
+
+.list-complete-leave-active {
+  position: absolute;
+  box-shadow: 0 0 rem(5px) rem(2px) var(--grey-200);
 }
 </style>
