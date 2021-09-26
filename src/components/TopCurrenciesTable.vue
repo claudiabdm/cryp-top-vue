@@ -1,6 +1,6 @@
 <template>
   <BaseTable :rows="currencies" :columns="$options.columns">
-    <template v-slot:rowContent="{ row, value, columnName }">
+    <template v-slot:rowContent="{ row, columnName }">
       <RouterLink class="table__cell-inner" :to="`/currencies/${row.name}`">
         <template v-if="columnName === 'name'">
           <div class="top-crypto-table__name">
@@ -21,16 +21,16 @@
           <span
             :class="[
               {
-                up: !row.change24h.includes('-'),
-                down: row.change24h.includes('-'),
+                up: !row.change24hDisplay.includes('-'),
+                down: row.change24hDisplay.includes('-'),
               },
             ]"
           >
-            {{ row.change24h }}
+            {{ row.change24hDisplay }}
           </span>
         </template>
         <template v-else>
-          {{ value }}
+          {{ row[`${columnName}Display`] }}
         </template>
       </RouterLink>
     </template>

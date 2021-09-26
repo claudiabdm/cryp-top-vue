@@ -32,14 +32,22 @@ function getTopCurrencies(currencyQuote: string): void {
         marketCap: '-',
         change24h: '-',
         volume24h: '-',
+        priceDisplay: '-',
+        marketCapDisplay: '-',
+        change24hDisplay: '-',
+        volume24hDisplay: '-',
       };
       if (elem.DISPLAY) {
         state.currencies?.push({
           ...currency,
-          price: elem.DISPLAY[currencyQuote].PRICE,
-          marketCap: elem.DISPLAY[currencyQuote].MKTCAP,
-          change24h: elem.DISPLAY[currencyQuote].CHANGE24HOUR,
-          volume24h: elem.DISPLAY[currencyQuote].TOTALVOLUME24H,
+          price: elem.RAW[currencyQuote].PRICE,
+          marketCap: elem.RAW[currencyQuote].MKTCAP,
+          change24h: elem.RAW[currencyQuote].CHANGE24HOUR,
+          volume24h: elem.RAW[currencyQuote].TOTALVOLUME24H,
+          priceDisplay: elem.DISPLAY[currencyQuote].PRICE,
+          marketCapDisplay: elem.DISPLAY[currencyQuote].MKTCAP,
+          change24hDisplay: elem.DISPLAY[currencyQuote].CHANGE24HOUR,
+          volume24hDisplay: elem.DISPLAY[currencyQuote].TOTALVOLUME24H,
         });
       } else {
         state.currencies?.push(currency);

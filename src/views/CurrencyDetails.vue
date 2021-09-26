@@ -16,12 +16,12 @@
               :class="[
                 'currency__change',
                 {
-                  up: !currency.change24h.includes('-'),
-                  down: currency.change24h.includes('-'),
+                  up: !currency.change24hDisplay.includes('-'),
+                  down: currency.change24hDisplay.includes('-'),
                 },
               ]"
             >
-              {{ currency.change24h }}
+              {{ currency.change24hDisplay }}
             </span>
           </div>
         </div>
