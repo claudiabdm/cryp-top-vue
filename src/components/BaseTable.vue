@@ -176,7 +176,6 @@ export default defineComponent({
       if (columnState.value == 'none') {
         columnState.value = 'up';
       } else if (columnState.value == 'up') {
-        console.log('down');
         columnState.value = 'down';
       } else {
         columnState.value = 'none';
