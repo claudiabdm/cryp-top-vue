@@ -255,7 +255,7 @@ $header-height: 45px;
   overflow-x: auto;
   overflow-y: hidden;
   background-color: #fff;
-  box-shadow: 0 0 rem(5px) rem(2px) var(--grey-200);
+  box-shadow: var(--box-shadow);
 }
 
 .table {
@@ -380,6 +380,6 @@ $header-height: 45px;
 
 .list-complete-leave-active {
   position: absolute;
-  box-shadow: 0 0 rem(5px) rem(2px) var(--grey-200);
+  box-shadow: var(--box-shadow);
 }
 </style>

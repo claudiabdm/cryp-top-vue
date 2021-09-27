@@ -45,7 +45,7 @@ export default defineComponent({
     margin-top: rem(5px);
     padding: rem(5px);
     background-color: #fff;
-    box-shadow: 0 0 rem(5px) rem(2px) var(--grey-200);
+    box-shadow: var(--box-shadow);
     &:hover {
       cursor: pointer;
     }
