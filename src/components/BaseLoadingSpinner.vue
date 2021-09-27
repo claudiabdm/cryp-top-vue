@@ -1,8 +1,8 @@
 <template>
   <svg
     class="svg"
-    width="60"
-    height="60"
+    :width="size"
+    :height="size"
     viewBox="0 0 60 60"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -14,6 +14,18 @@
     </g>
   </svg>
 </template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+export default defineComponent({
+  props: {
+    size: {
+      type: [Number, String],
+      default: 60,
+    },
+  },
+});
+</script>
 
 <style scoped>
 .svg {
