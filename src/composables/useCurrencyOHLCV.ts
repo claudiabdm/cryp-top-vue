@@ -3,10 +3,11 @@ import { CurrencyOHLCV } from '@/types/models';
 import { fetchData } from '@/utils/fetchData';
 import { useRoute } from 'vue-router';
 import { useCurrencyQuote } from './useCurrencyQuote';
+import { onMounted, watch } from 'vue';
 
 const { currencyQuote } = useCurrencyQuote();
 
-export function useCurrencyOHLCV() {
+export function useCurrencyOHLCV(limit: number) {
   const state = reactive<{
     currencyOHLCV: CurrencyOHLCV[] | null;
     lastTimestamp: number;
@@ -16,6 +17,12 @@ export function useCurrencyOHLCV() {
   });
 
   const route = useRoute();
+
+  watch([currencyQuote, route], async () => {
+    getCurrencyOHLCV(limit);
+  });
+
+  onMounted(() => getCurrencyOHLCV(limit));
 
   function getCurrencyOHLCV(limit: number) {
     const sym = Array.isArray(route.params.symbol)

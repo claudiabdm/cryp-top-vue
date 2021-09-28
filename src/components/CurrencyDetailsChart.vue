@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, watch } from 'vue';
+import { computed, defineComponent } from 'vue';
 import {
   Chart,
   LineController,
@@ -45,15 +45,7 @@ export default defineComponent({
     const { currencyQuote } = useCurrencyQuote();
     const route = useRoute();
 
-    const { currencyOHLCV, getCurrencyOHLCV } = useCurrencyOHLCV();
-
-    watch(currencyQuote, async () => {
-      getCurrencyOHLCV(30);
-    });
-
-    onMounted(() => {
-      getCurrencyOHLCV(30);
-    });
+    const { currencyOHLCV } = useCurrencyOHLCV(30);
 
     const chartData = computed(() => {
       let labels = [];

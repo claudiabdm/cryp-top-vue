@@ -22,14 +22,7 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  nextTick,
-  onMounted,
-  ref,
-  watch,
-} from 'vue';
+import { computed, defineComponent, nextTick, ref } from 'vue';
 import BaseTable from '@/components/BaseTable.vue';
 import { useCurrencyOHLCV } from '@/composables/useCurrencyOHLCV';
 import { useCurrencyQuote } from '@/composables/useCurrencyQuote';
@@ -80,12 +73,8 @@ export default defineComponent({
   },
   setup(props) {
     const { currencyQuote } = useCurrencyQuote();
-    const {
-      currencyOHLCV,
-      fetchCurrencyOHLCV,
-      getCurrencyOHLCV,
-      lastTimestamp,
-    } = useCurrencyOHLCV();
+    const { currencyOHLCV, fetchCurrencyOHLCV, lastTimestamp } =
+      useCurrencyOHLCV(30);
     const loadButtonText = ref('Load more');
 
     const sortedData = computed(() => {
@@ -94,12 +83,6 @@ export default defineComponent({
       }
       return null;
     });
-
-    watch(currencyQuote, async () => {
-      getCurrencyOHLCV(10);
-    });
-
-    onMounted(() => getCurrencyOHLCV(10));
 
     async function loadMore() {
       if (loadButtonText.value === 'Loading...') return;
