@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, watch } from 'vue';
 import BaseLoadingSpinner from '@/components/BaseLoadingSpinner.vue';
 export default defineComponent({
   components: {
@@ -23,6 +23,23 @@ export default defineComponent({
       type: Array,
       default: null,
     },
+    speed: {
+      type: Number,
+      default: 100,
+    },
+  },
+  setup(props) {
+    watch(
+      () => props.list,
+      (newValue) => {
+        if (newValue) {
+          document.documentElement.style.setProperty(
+            '--speed',
+            `${props.speed / newValue.length}s`
+          );
+        }
+      }
+    );
   },
 });
 </script>
@@ -52,7 +69,8 @@ export default defineComponent({
   &__list {
     @include flex(center, flex-start);
     width: 100%;
-    animation: move 20s infinite linear;
+    will-change: transform;
+    animation: move var(--speed) infinite linear;
   }
   &__elem {
     margin: rem(20px) rem(10px);
