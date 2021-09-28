@@ -38,15 +38,21 @@
       </nav>
       <BaseSelectCurrencyQuote class="header__select header__elem" />
     </div>
+    <div class="header__row">
+      <TheCurrenciesTicker />
+    </div>
   </header>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import BaseSelectCurrencyQuote from '@/components/BaseSelectCurrencyQuote.vue';
+import TheCurrenciesTicker from '@/components/TheCurrenciesTicker.vue';
+
 export default defineComponent({
   components: {
     BaseSelectCurrencyQuote,
+    TheCurrenciesTicker,
   },
 });
 </script>

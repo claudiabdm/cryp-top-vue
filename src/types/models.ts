@@ -25,6 +25,13 @@ export interface TopCurrenciesAPI {
   }[];
 }
 
+export interface CurrencyTickerAPI {
+  FROMSYMBOL: string;
+  TOSYMBOL: string;
+  PRICE: string;
+  FLAGS: 1 | 2 | 3;
+}
+
 export interface Currency {
   id: string;
   name: string;
@@ -38,6 +45,7 @@ export interface Currency {
   change24hDisplay: string;
   marketCapDisplay: string;
   volume24hDisplay: string;
+  flag?: 'up' | 'down' | 'unchanged';
 }
 
 export interface CurrencyOHLCV {

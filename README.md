@@ -11,6 +11,7 @@
 ### Additional Features Checklist
 
 - [x] Ability to select currency quote to calculate new pairings.
+- [x] Use web sockets to get ticker real time data.
 ### Requirements Checklist
 
 - [x] Create a small app that shows a list of the most popular crypto currencies, with key data.
@@ -42,9 +43,8 @@
 
 # Improvements
 - Add date selector for choosing date range for the historical data. 
-- Use web sockets to get real time data.
 - Add dark mode.
-- Add unit testins with **Jest**.
+- Add unit testings with **Jest**.
 - Add e2e tests with **Cypress**.
 - Make accessibility checks by following **WCAG**. 
 - Add **microanimations** to improve user experience overall.
