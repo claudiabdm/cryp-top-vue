@@ -1,4 +1,6 @@
-# Husleie Challenge
+# CrypTop
+
+SPA to show top cryptocurrencies and historical data built with Vue 3 for Husleie Challenge. 
 
 ## Table of contents
 * [Tech Stack](#tech-stack)
