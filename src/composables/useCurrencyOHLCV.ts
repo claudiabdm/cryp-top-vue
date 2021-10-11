@@ -41,7 +41,7 @@ export function useCurrencyOHLCV(limit: number) {
     lastTimestamp?: number
   ) {
     const toTs = lastTimestamp == null ? '' : `&toTs=${lastTimestamp}`;
-    const api = `${process.env.VUE_APP_CRYPTO_API_URL}/v2/histoday?fsym=${symbol}&tsym=${currencyQuote}&limit=${limit}&aggregate=1${toTs}`;
+    const api = `${process.env.VUE_APP_CRYPTO_API_URL}/v2/histoday?fsym=${symbol}&tsym=${currencyQuote}&limit=${limit}&aggregate=1${toTs}&api_key=${process.env.VUE_APP_API_KEY}`;
     const res = await fetchData<{
       Data: { Data: CurrencyOHLCV[]; TimeFrom: number };
     }>(api, {

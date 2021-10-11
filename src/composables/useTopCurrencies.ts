@@ -19,7 +19,7 @@ watch(currencyQuote, (newValue) => {
 });
 
 function getTopCurrencies(currencyQuote: string): void {
-  const api = `${process.env.VUE_APP_CRYPTO_API_URL}/top/totaltoptiervolfull?limit=10&tsym=${currencyQuote}`;
+  const api = `${process.env.VUE_APP_CRYPTO_API_URL}/top/totaltoptiervolfull?limit=10&tsym=${currencyQuote}&api_key=${process.env.VUE_APP_API_KEY}`;
   fetchData<TopCurrenciesAPI>(api, { method: 'GET' }).then((res) => {
     state.currencies = [];
     res.Data.forEach((elem) => {

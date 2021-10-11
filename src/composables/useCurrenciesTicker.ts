@@ -24,8 +24,7 @@ export function useCurrenciesTicker() {
   });
 
   function getTopCurrenciesTicker(currencies: Currency[]): void {
-    const apiKey =
-      '14bbf6ed40a93883871793c9b3eeb071871341ecc0e621dd428aa8ac2d50360d';
+    const apiKey = process.env.VUE_APP_API_KEY;
     const ccStreamer = new WebSocket(
       'wss://streamer.cryptocompare.com/v2?api_key=' + apiKey
     );
